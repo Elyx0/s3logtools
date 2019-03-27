@@ -1,0 +1,79 @@
+{
+  "name": "s3logtools",
+  "version": "1.0.0",
+  "description": "Command line tools to manage s3 access log files",
+  "main": "./lib/s3lt",
+  "scripts": {
+    "lint": "echo 0 || eslint bin/* lib test",
+    "watch": "chokidar \"lib/**/*.js\" -c \"npm run test\"",
+    "test": "npm run lint && nyc mocha",
+    "mocha": "mocha test/*",
+    "build": "tsc -p .",
+    "gen-cover-one": "nyc --reporter=lcov --reporter=text-lcov mocha test/test__s3stream.js",
+    "mochaline": "mocha test/test__s3stream.js",
+    "sec": "synk test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elyx0/s3logtools.git"
+  },
+  "keywords": [
+    "s3",
+    "aws",
+    "access-log",
+    "csv",
+    "json",
+    "parse"
+  ],
+  "nyc": {
+    "check-coverage": true,
+    "per-file": false,
+    "lines": 70,
+    "statements": 70,
+    "functions": 70,
+    "branches": 70
+  },
+  "preferGlobal": true,
+  "engines": {
+    "node": ">=8"
+  },
+  "bin": {
+    "s3logtools": "./bin/s3logtools",
+    "s3lt": "./bin/s3lt"
+  },
+  "files": [
+    "bin",
+    "lib"
+  ],
+  "author": "Elyx0",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/elyx0/s3logtools/issues"
+  },
+  "homepage": "https://github.com/elyx0/s3logtools#readme",
+  "devDependencies": {
+    "@types/node": "^11.11.6",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "eslint": "^5.15.1",
+    "mocha": "^6.0.2",
+    "nodemon": "^1.18.10",
+    "nyc": "^13.3.0",
+    "request": "^2.88.0",
+    "should": "^13.2.3",
+    "sinon": "^7.2.7",
+    "sinon-chai": "^3.3.0",
+    "spawn-please": "^0.3.0",
+    "synk": "0.0.2",
+    "ts-node": "^8.0.3",
+    "typescript": "^3.3.4000"
+  },
+  "dependencies": {
+    "aws-sdk": "^2.418.0",
+    "chalk": "^2.4.2",
+    "commander": "^2.19.0",
+    "get-stdin": "^6.0.0",
+    "node-alias": "^1.0.4",
+    "update-notifier": "^2.5.0"
+  }
+}

@@ -1,0 +1,46 @@
+#!/usr/bin/env node
+
+'use strict';
+
+const program = require('commander');
+const updateNotifier = require('update-notifier');
+const pkg = require('../package.json');
+const s3lt = require('../lib/s3lt.js');
+
+// Check for new version
+updateNotifier({pkg}).notify({defer: false});
+
+let command = null;
+let bucket = null;
+program
+    .description('Hello')
+    .arguments('<command> <bucket> [options]')
+    .action((com, buc) => {
+        command = com;
+        bucket = buc;
+    })
+    .option('-o, --output <path/filename>', 'compacts the response into a correctly formatted file (.json/.csv) ')
+    .option('-w, --watch', 'live tails the S3 logs')
+    .option('-s, --start <time>','starts the logging output from this time (momentjs compatible)')
+    .option('-a, --ago','starts the logging output <x> time ago (momentjs compatible)')
+    .option('--prefix','fetch only logs with the specified prefix')
+    .option('-b, --beautify','beautify the output')
+    .option('-r, --raw','outputs the logs as is from s3')
+    .option('-p, --profile <awsprofilename>','AWS profile name to use from ~/.aws/credentials')
+    .option('-f, --filter <pattern>','filters only the logs matching the specified pattern')
+    .option('-l, --loglevel <n>', 'what level of logs to report: silent, error, minimal, warn, info, verbose, silly (default: warn)', 'warn')
+    .version(pkg.version, '-v, --version');
+
+program.parse(process.argv);
+
+if (!command || !bucket) {
+    console.error('<command> and <bucket> parameters are required');
+    process.exit(1);
+} else {
+    program.command = command;
+    program.bucket = bucket;
+    program.cli = true;
+}
+
+
+s3lt.run(program);
