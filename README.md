@@ -20,17 +20,20 @@ then store his access keys in your `~/.aws/credentials`.
 {
     "Version": "2012-10-17",
     "Statement": [
+        
         {
             "Sid": "VisualEditor0",
             "Effect": "Allow",
             "Action": "s3:ListBucket",
-            "Resource": "*"
+            "Resource": ["arn:aws:s3:::muzetestlogs",
+                    "arn:aws:s3:::your-bucket-name/*"]
         },
         {
             "Sid": "VisualEditor1",
             "Effect": "Allow",
             "Action": "s3:*Object",
-            "Resource": "*"
+            "Resource": ["arn:aws:s3:::your-bucket-name",
+                    "arn:aws:s3:::your-bucket-name/*"]
         }
     ]
 }
